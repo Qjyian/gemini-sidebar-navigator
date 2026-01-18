@@ -1,0 +1,245 @@
+/* Gemini 对话导航侧边栏 - Final Polish */
+
+/* --- 1. 悬浮球 --- */
+.gemini-floating-tab {
+  position: fixed;
+  top: 50%;
+  right: 24px;
+  transform: translateY(-50%);
+  background: linear-gradient(135deg, #4b90ff 0%, #ff5546 100%);
+  width: 48px;
+  height: 48px;
+  border-radius: 20px;
+  box-shadow: 0 4px 24px rgba(66, 133, 244, 0.35);
+  cursor: pointer;
+  z-index: 9999;
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(8px);
+}
+
+.gemini-floating-tab:hover {
+  transform: translateY(-50%) scale(1.1) rotate(5deg);
+  box-shadow: 0 8px 32px rgba(66, 133, 244, 0.5);
+}
+
+.gemini-floating-tab svg {
+  width: 24px;
+  height: 24px;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+}
+
+.gemini-floating-tab.hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-50%) scale(0.8);
+}
+
+/* --- 2. 侧边栏容器 --- */
+.gemini-nav-sidebar {
+  position: fixed;
+  top: 50%;
+  right: 24px;
+  transform: translateY(-50%);
+  width: 280px;
+  max-height: 60vh;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(20px);
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+  z-index: 10000;
+  display: flex;
+  flex-direction: column;
+  font-family: 'Google Sans', Roboto, -apple-system, sans-serif;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  padding-top: 16px;
+}
+
+.gemini-nav-sidebar.show {
+  opacity: 1;
+  pointer-events: all;
+  transform: translateY(-50%) translateX(0);
+}
+
+.gemini-nav-sidebar.collapsed {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-50%) translateX(20px);
+}
+
+/* --- 3. 顶部功能区 --- */
+.top-bar {
+  padding: 0 16px 12px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.search-wrapper {
+  flex: 1;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-wrapper input {
+  width: 100%;
+  padding: 8px 12px 8px 32px;
+  background: rgba(0, 0, 0, 0.04);
+  border: 1px solid transparent;
+  border-radius: 12px;
+  font-size: 13px;
+  color: #1f1f1f;
+  outline: none;
+  transition: all 0.2s;
+  box-sizing: border-box;
+}
+
+.search-wrapper input:focus {
+  background: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.search-wrapper input::placeholder { color: #8e918f; }
+
+.search-icon {
+  position: absolute;
+  left: 10px;
+  width: 14px;
+  height: 14px;
+  border: 2px solid #8e918f;
+  border-radius: 50%;
+  box-sizing: border-box;
+  opacity: 0.6;
+  pointer-events: none;
+}
+.search-icon::after {
+  content: '';
+  position: absolute;
+  top: 9px;
+  left: 9px;
+  width: 4px;
+  height: 2px;
+  background: #8e918f;
+  transform: rotate(45deg);
+}
+
+.refresh-btn {
+  width: 34px;
+  height: 34px;
+  border: none;
+  background: transparent;
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #5f6368;
+  transition: all 0.2s;
+}
+
+.refresh-btn:hover {
+  background: rgba(0, 0, 0, 0.05);
+  color: #1f1f1f;
+}
+
+.refresh-btn svg { width: 18px; height: 18px; }
+
+/* --- 4. 消息列表区 --- */
+.message-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0 8px 16px;
+  mask-image: linear-gradient(to bottom, transparent 0%, black 12px, black 100%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 12px, black 100%);
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0,0,0,0.1) transparent;
+}
+
+.message-list::-webkit-scrollbar { width: 4px; }
+.message-list::-webkit-scrollbar-thumb { background: rgba(0, 0, 0, 0.1); border-radius: 4px; }
+.message-count { display: none; }
+
+/* --- 5. 消息项 --- */
+.message-item {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 8px 10px;
+  margin: 1px 0;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  color: #444746;
+  font-size: 13px;
+  line-height: 1.5;
+  border: 1px solid transparent;
+}
+
+.message-item:hover {
+  background: rgba(0, 0, 0, 0.04);
+  color: #1f1f1f;
+}
+
+.message-number {
+  font-size: 11px;
+  font-family: 'Google Sans', 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+  color: #c4c7c5;
+  min-width: 18px;
+  text-align: right;
+  flex-shrink: 0;
+  opacity: 0.8;
+}
+
+.message-item:hover .message-number { color: #8e918f; }
+
+.message-text {
+  flex: 1;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  word-break: break-word;
+}
+
+/* --- 6. 暗色模式 --- */
+@media (prefers-color-scheme: dark) {
+  .gemini-nav-sidebar {
+    background: rgba(30, 31, 32, 0.92);
+    border-color: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+  }
+  .search-wrapper input { background: rgba(255, 255, 255, 0.08); color: #e3e3e3; }
+  .search-wrapper input:focus { background: rgba(255, 255, 255, 0.12); }
+  .search-icon { border-color: #8e918f; }
+  .search-icon::after { background: #8e918f; }
+  .refresh-btn { color: #8e918f; }
+  .refresh-btn:hover { background: rgba(255, 255, 255, 0.1); color: #e3e3e3; }
+  .message-item { color: #c4c7c5; }
+  .message-item:hover { background: rgba(255, 255, 255, 0.08); color: #e3e3e3; }
+  .message-number { color: #5e6062; }
+  .message-item:hover .message-number { color: #8e918f; }
+}
+
+/* --- 7. 【关键更新】高亮动画类 (Injected Style) --- */
+/* 注意：这个类会通过 JS 动态添加到 Gemini 网页原生的消息气泡上 */
+.gemini-message-highlight-pulse {
+  position: relative;
+  /* 关键：使用 inset 阴影实现左侧光标，而不是 border，这样不会引起布局抖动 */
+  box-shadow: inset 4px 0 0 0 #4b90ff, 0 8px 20px rgba(66, 133, 244, 0.15) !important;
+  /* 柔和的背景渐变 */
+  background: linear-gradient(90deg, rgba(66, 133, 244, 0.08) 0%, rgba(66, 133, 244, 0) 100%) !important;
+  /* 强制圆角，防止很难看的直角 */
+  border-radius: 4px 12px 12px 4px !important;
+  /* 动画过渡 */
+  transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+}

@@ -1,0 +1,31 @@
+{
+  "manifest_version": 3,
+  "name": "Gemini 对话导航侧边栏",
+  "version": "1.0.0",
+  "description": "为 Gemini 添加侧边栏，快速定位和导航历史对话消息",
+  "permissions": [
+    "storage"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://gemini.google.com/*",
+        "https://aistudio.google.com/*"
+      ],
+      "js": ["content.js"],
+      "css": ["sidebar.css"],
+      "run_at": "document_end"
+    }
+  ],
+  "icons": {
+    "16": "icon16.png",
+    "48": "icon48.png",
+    "128": "icon128.png"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["sidebar.html"],
+      "matches": ["https://gemini.google.com/*", "https://aistudio.google.com/*"]
+    }
+  ]
+}
