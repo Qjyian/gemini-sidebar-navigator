@@ -262,6 +262,6 @@ cd ai-chat-navigator
 
 **感谢使用 AI Chat Navigator！**
 
-Made with ❤️ by [wqj](https://github.com/Qiyian)
+Made with ❤️ by wqj
 
 </div>
